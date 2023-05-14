@@ -1,0 +1,48 @@
+# For API Connection
+
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = "NA"
+  secret_key = "NA/8RHBScsCyL9fdpH"
+}
+
+resource "aws_instance" "test" {
+  ami                    = "ami-03d3eec31be6ef6f9"
+  instance_type          = "t2.large"
+  key_name               = "karan-aws"
+  availability_zone   =    "ap-south-1b"
+# count                  = 1
+  vpc_security_group_ids = ["sg-0b359405ec38b2082"]
+  tags = {
+    Name = "Test"
+  }
+  
+It will Create Root Volume
+
+  root_block_device {
+    delete_on_termination = true
+    iops = 150
+    volume_size = 50
+    volume_type = "gp2"
+}
+}
+
+# it will create Extra ebs volume
+
+resource "aws_ebs_volume" "example" {
+  availability_zone = "ap-south-1b"
+  size              = 40
+  type              = "gp3"
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
+it will attach Extra Volume to instance
+
+resource "aws_volume_attachment" "ebs_att" {
+  volume_id   = aws_ebs_volume.example.id
+  instance_id = aws_instance.test.id
+  device_name = "/dev/sdd"
+}
