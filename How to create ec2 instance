@@ -9,7 +9,7 @@ provider "aws" {
 resource "aws_instance" "test" {
   ami                    = "ami-03d3eec31be6ef6f9"
   instance_type          = "t2.large"
-  key_name               = "karan-aws"
+  key_name               = "deployer-key"
   availability_zone   =    "ap-south-1b"
 # count                  = 1
   vpc_security_group_ids = ["sg-0b359405ec38b2082"]
@@ -45,4 +45,15 @@ resource "aws_volume_attachment" "ebs_att" {
   volume_id   = aws_ebs_volume.example.id
   instance_id = aws_instance.test.id
   device_name = "/dev/sdd"
+}
+
+#How to create key in aws via terraform
+
+#ssh-keygen -t rsa
+#Enter in which file to save: ./keyname
+
+
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = file("/home/discusit/terraform/mykey.pub")
 }
