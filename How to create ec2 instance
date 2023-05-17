@@ -12,7 +12,8 @@ resource "aws_instance" "test" {
   key_name               = "deployer-key"
   availability_zone   =    "ap-south-1b"
 # count                  = 1
-  vpc_security_group_ids = ["sg-0b359405ec38b2082"]
+# vpc_security_group_ids = ["sg-0b359405ec38b2082"]
+  vpc_security_group_ids = ["aws_security_group.test-server-sg.id"]
   tags = {
     Name = "Test"
   }
@@ -57,3 +58,35 @@ resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
   public_key = file("/home/discusit/terraform/mykey.pub")
 }
+
+#Create Security Group
+
+resource "aws_security_group" "test-server-sg" {
+  name        = "test-server-sg"
+  description = "Allow inbound and outbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "ssh"
+    cidr_blocks      = ["myip"]
+  }
+
+#FROMPORT_TOPORT 0to0 means ALL, same with -1 mean ALL Protocol
+
+  egress {
+    description      = "All Port ALLOW"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+
