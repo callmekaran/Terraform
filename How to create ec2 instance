@@ -14,6 +14,7 @@ resource "aws_instance" "test" {
 # count                  = 1
 # vpc_security_group_ids = ["sg-0b359405ec38b2082"]
   vpc_security_group_ids = ["aws_security_group.test-server-sg.id"]
+# user_data = file("/home/ubuntu/install-apache2-script.sh")
   tags = {
     Name = "Test"
   }
