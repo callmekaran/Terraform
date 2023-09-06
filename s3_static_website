@@ -59,7 +59,7 @@ resource "aws_s3_object" "object" {
   key    = "index.html"
   source = "/home/ubuntu/terraform/index.html"
 }
-resource "aws_s3_object" "objec2t" {
+resource "aws_s3_object" "another_object" {
   bucket = aws_s3_bucket.static_website.id
   key = "error.html"
   source = "/home/ubuntu/terraform/error.html"
