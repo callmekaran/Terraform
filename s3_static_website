@@ -54,3 +54,13 @@ resource "aws_s3_bucket_policy" "bucket-policy" {
 }
 POLICY
 }
+resource "aws_s3_object" "object" {
+  bucket = aws_s3_bucket.static_website.id
+  key    = "index.html"
+  source = "/home/ubuntu/terraform/index.html"
+}
+resource "aws_s3_object" "objec2t" {
+  bucket = aws_s3_bucket.static_website.id
+  key = "error.html"
+  source = "/home/ubuntu/terraform/error.html"
+}
