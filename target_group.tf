@@ -23,15 +23,15 @@ resource "aws_lb_target_group" "my_target_group" {
     path                = "/"
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    timeout             = 10
+    healthy_threshold   = 5
+    unhealthy_threshold = 5
   }
 
   // Stickiness settings
   stickiness {
-    type                = "lb_cookie"  # You can choose "lb_cookie" or "source_ip" as the stickiness type
-    cookie_duration     = 3600
+    type                = "lb_cookie"  # You can choose "lb_cookie" or "source_ip" as the stickiness type. i have use load balancer generated cookie
+    cookie_duration     = 300
   }
 
   // Tags (optional)
