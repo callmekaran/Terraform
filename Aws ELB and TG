@@ -118,7 +118,7 @@ resource "aws_lb_listener" "http_listener" {
 }
 
 data "aws_acm_certificate" "cert" {
-  domain   = "mia-dev.rlogical.com" // Replace with your actual domain
+  domain   = "example.com" // Replace with your actual domain
   statuses = ["ISSUED"]
 }
 
