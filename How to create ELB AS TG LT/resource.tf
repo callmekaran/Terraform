@@ -84,6 +84,7 @@ resource "aws_launch_template" "launch_template" {
   name          = "my-launch-template"
   image_id      = "ami-03bb6d83c60fc5f7c"
   instance_type = var.instance_type
+  key_name      = "karan"  # Replace with the name of your key pair
 
   tag_specifications {
     resource_type = "instance"
@@ -91,18 +92,18 @@ resource "aws_launch_template" "launch_template" {
       Name = "my-instance"
     }
   }
+  user_data = base64encode(<<-EOF
+              #!/bin/bash
+              sudo apt-get update
+              sudo apt-get install -y nginx
+              public_ip=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+              sudo echo "Hello from Nginx $public_ip" > /var/www/html/index.nginx-debian.html
+              sudo systemctl restart nginx
+              sudo systemctl enable nginx
+              EOF
+)
 }
-resource "aws_autoscaling_group" "auto_scaling_group" {
-  name              = "my-auto-scaling-group"
-  desired_capacity  = var.desired_capacity
-  max_size          = var.max_size
-  min_size          = var.min_size
-  target_group_arns = [aws_lb_target_group.my_target_group.arn]
-  launch_template {
-    id      = aws_launch_template.launch_template.id
-    version = aws_launch_template.launch_template.latest_version
-  }
-}
+
 resource "aws_autoscaling_group" "auto_scaling_group" {
   name             = "my-auto-scaling-group"
   desired_capacity = var.desired_capacity
@@ -122,15 +123,18 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
   }
 }
 
-resource "aws_lb_listener" "https_listener" {
-  load_balancer_arn = aws_lb.my_alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"  // You may adjust the SSL policy according to your requirements
-  certificate_arn   = data.aws_acm_certificate.cert.arn
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.my_target_group.arn
+resource "aws_autoscaling_policy" "cpu_scaling_policy" {
+
+  name                   = "cpu-scaling-policy"
+  policy_type            = "TargetTrackingScaling" // Specify the policy type
+  autoscaling_group_name = aws_autoscaling_group.auto_scaling_group.name
+
+  // Specify the metric alarm
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value     = 70
+    disable_scale_in = false // Allow scaling in
   }
 }
-
