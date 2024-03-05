@@ -85,18 +85,6 @@ resource "aws_launch_template" "launch_template" {
   image_id      = "ami-03bb6d83c60fc5f7c"
   instance_type = var.instance_type
 
-  network_interfaces {
-    device_index    = 0
-    subnet_id       = data.aws_subnet.ap-south-1a_subnets.id
-    security_groups = [data.aws_security_group.asg_security_group.id]
-  }
-
-  network_interfaces {
-    device_index    = 1
-    subnet_id       = data.aws_subnet.ap-south-1b_subnets.id
-    security_groups = [data.aws_security_group.asg_security_group.id]
-  }
-
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -115,20 +103,25 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
     version = aws_launch_template.launch_template.latest_version
   }
 }
-resource "aws_autoscaling_policy" "cpu_scaling_policy" {
-  name                   = "cpu-scaling-policy"
-  policy_type            = "TargetTrackingScaling" // Specify the policy type
-  autoscaling_group_name = aws_autoscaling_group.auto_scaling_group.name
+resource "aws_autoscaling_group" "auto_scaling_group" {
+  name             = "my-auto-scaling-group"
+  desired_capacity = var.desired_capacity
+  max_size         = var.max_size
+  min_size         = var.min_size
 
-  // Specify the metric alarm
-  target_tracking_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilization"
-    }
-    target_value     = 70
-    disable_scale_in = false // Allow scaling in
+  # Specify the subnet IDs where instances will be launched
+  vpc_zone_identifier = [
+    data.aws_subnet.ap-south-1a_subnets.id,
+    data.aws_subnet.ap-south-1b_subnets.id
+  ]
+
+  target_group_arns = [aws_lb_target_group.my_target_group.arn]
+  launch_template {
+    id      = aws_launch_template.launch_template.id
+    version = aws_launch_template.launch_template.latest_version
   }
 }
+
 resource "aws_lb_listener" "https_listener" {
   load_balancer_arn = aws_lb.my_alb.arn
   port              = "443"
