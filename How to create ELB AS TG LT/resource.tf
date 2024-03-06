@@ -81,6 +81,7 @@ resource "aws_launch_template" "launch_template" {
   image_id      = "ami-03bb6d83c60fc5f7c"
   instance_type = var.instance_type
   key_name      = "karan"  # Replace with the name of your key pair
+  vpc_security_group_ids = [aws_security_group.alb_sg.id]
 
   tag_specifications {
     resource_type = "instance"
