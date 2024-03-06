@@ -33,7 +33,6 @@ resource "aws_lb_target_group" "my_target_group" {
     enabled             = true
     interval            = 30
     path                = "/"
-    port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 10
     healthy_threshold   = 5
