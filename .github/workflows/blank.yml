@@ -20,6 +20,7 @@ jobs:
       - name: say hello
         run: |
              cd /var/www/html/ram
+             actions/setup-node@v3
              echo "RAM" > RAM.TXT        
 
       # - name: Install project dependencies
