@@ -17,6 +17,11 @@ jobs:
         with:
           node-version: '14'
 
+      - name: say hello
+        run: |
+             cd /var/www/html/ram
+             echo "RAM" > RAM.TXT        
+
       # - name: Install project dependencies
       #   run: |
       #     cd /var/www/html/react_timeflow_frontend
