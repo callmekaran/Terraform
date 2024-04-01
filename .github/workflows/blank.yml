@@ -1,0 +1,45 @@
+name: React Frontend Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # - name: Install project dependencies
+      #   run: |
+      #     cd /var/www/html/react_timeflow_frontend
+      #     npm install
+
+      # - name: Build project
+      #   run: |
+      #     cd /var/www/html/react_timeflow_frontend
+      #     npm run build
+
+      # - name: Stop existing PM2 process
+      #   run: |
+      #     cd /var/www/html/react_timeflow_frontend
+      #     pm2 delete react_timeflow_frontend || true
+
+      # - name: Fetch latest changes
+      #   run: |
+      #     cd /var/www/html/react_timeflow_frontend
+      #     git fetch --all
+      #     git reset --hard origin/master
+
+      # - name: Start PM2 process
+      #   run: |
+      #     cd /var/www/html/react_timeflow_frontend
+      #     pm2 start npm --log-date-format 'DD-MM HH:mm:ss.SSS' --name "react_timeflow_frontend" -- start
+      #     pm2 save
