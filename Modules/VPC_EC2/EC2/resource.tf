@@ -61,7 +61,7 @@ resource "aws_security_group" "test-server-sg" {
 #ssh-keygen -t rsa -b 2048 -f ravat
 
 resource "aws_key_pair" "ravat" {
-  key_name   = ravat
+  key_name   = var.key_name
   public_key = file("${path.module}/ravat.pub")
 }
 
