@@ -57,3 +57,9 @@ resource "aws_security_group" "test-server-sg" {
     Name = "allow_tls"
   }
 }
+
+resource "aws_key_pair" "ravat" {
+  key_name   = ravat
+  public_key = file("${path.module}/ravat.pub")
+}
+
