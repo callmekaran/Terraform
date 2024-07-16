@@ -34,4 +34,5 @@ After applying the Terraform configuration, you need to validate the SSL certifi
 4. Add these CNAME records to your DNS provider to complete the validation.
 
 **Note:** The SSL certification process must be performed in the N. Virginia (us-east-1) region as ACM supports SSL certification only in this region.
+
 **Note:** Copy the CNAME records provided by cloudfront_distribution_domain_name
