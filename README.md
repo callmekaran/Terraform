@@ -1,5 +1,12 @@
 **Terraform Infrastructure for EC2, CloudWatch, SNS, and SSM**
 
+**CPU Utilization: High CPU usage.**
+**Memory Utilization: High memory usage.**
+**Disk Utilization: High disk usage.**
+**Instance Status Check: Failures in instance status checks.**
+**System Status Check: Failures in system status checks.**
+
+
 **Directory Structure**
 
 ├── main.tf
