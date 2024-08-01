@@ -2,24 +2,21 @@ resource "aws_instance" "ubuntu_server" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
   key_name                    = var.key_name
-  subnet_id                   = var.public_subnet_id
-  vpc_security_group_ids      = [aws_security_group.test-server-sg.id]
   associate_public_ip_address = true
+  iam_instance_profile = data.aws_iam_instance_profile.ssm_instance_profile.name
+
   tags = {
     Name = "Ubuntu22Server"
   }
+  user_data = file("/home/rlogical-lap-23/Terraform/modules/ec2/cloudwatch.sh")
 
-  root_block_device {
-    delete_on_termination = true
-    volume_size           = 10
-    volume_type           = "gp3"
-  }
+
 }
 
 resource "aws_security_group" "test-server-sg" {
   name        = "test-server-sg"
   description = "Allow inbound and outbound traffic"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
   ingress {
     description = "SSH from VPC"
     from_port   = 22
