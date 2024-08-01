@@ -1,10 +1,7 @@
-public_subnet_cidr_block  = "192.168.1.0/24"
-vpc_tags                  = "discusit"
-public_subnet_tags        = "public-subnet"
-igw_tags                  = "discusit-igw"
-route_cidr_block          = "0.0.0.0/0"
-public_route_tags         = "public-rt"
-vpc_cidr_block            = "192.168.0.0/16"
-private_route_tags        = "private-rt"
-private_subnet_cidr_block = "192.168.12.0/24"
-private_subnet_tags       = "private-subnet"
+email_addresses = [
+  "karan.ravat@rlogical.com",
+  "devops@rlogical.com"
+]
+reference_sns_topic = "module.sns-topic-creation.arn"
+
+instance_id = "module.instance_id"
