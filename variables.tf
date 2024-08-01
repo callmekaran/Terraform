@@ -1,40 +1,15 @@
-variable "vpc_cidr_block" {
-  description = "The CIDR block for the VPC"
+variable "email_addresses" {
+  description = "List of email addresses to subscribe to the SNS topic"
+  type        = list(string)
 }
-
-variable "public_subnet_cidr_block" {
-  description = "The CIDR block for the subnet"
+variable "key_name" {
+  default = "ravat" # Default value, can be overridden
 }
-
-variable "vpc_tags" {
-  description = "Tags for the VPC"
+variable "reference_sns_topic" {
+  description = "SNS topic ARN for alerts"
   type        = string
 }
-
-variable "public_subnet_tags" {
-  description = "Tags for the subnet"
-}
-
-variable "igw_tags" {
-  description = "Tags for the internet gateway"
-}
-
-variable "route_cidr_block" {
-  description = "The CIDR block for the route"
-}
-
-variable "public_route_tags" {
-  description = "Tags for the route table"
-}
-
-variable "private_subnet_cidr_block" {
-  description = "The CIDR block for the private subnet"
-}
-
-variable "private_subnet_tags" {
-  description = "Tags for the private subnet"
-}
-
-variable "private_route_tags" {
-  description = "Tags for the private route table"
+variable "instance_id" {
+  description = "EC2 InstanceID"
+  type        = string  
 }
