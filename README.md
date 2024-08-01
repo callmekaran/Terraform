@@ -52,7 +52,9 @@ SSH key pair for accessing EC2 instances
 **1 Clone the repository:**
 
 git clone <repository-url>
+
 cd <repository-directory>
+
 Update variables:
 
 Modify terraform.tfvars to specify your email addresses and other configuration values.
