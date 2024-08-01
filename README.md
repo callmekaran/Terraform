@@ -1,7 +1,7 @@
 **Terraform Infrastructure for EC2, CloudWatch, SNS, and SSM**
 
 **Directory Structure**
-
+**
 ├── main.tf
 ├── modules
 │   ├── cloudwatch
@@ -25,7 +25,7 @@
 ├── output.tf
 ├── provider.tf
 ├── terraform.tfvars
-└── variable.tf
+└── variable.tf**
 
 **Modules**
 
