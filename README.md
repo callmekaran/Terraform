@@ -58,7 +58,7 @@ SSH key pair for accessing EC2 instances
 
 **1 Clone the repository:**
 
-git clone <repository-url> && cd <repository-directory>
+git clone <repository-url> && cd <repository-directory>    
 
 Update variables:
 
