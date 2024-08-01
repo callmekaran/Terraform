@@ -8,7 +8,7 @@ resource "aws_instance" "ubuntu_server" {
   tags = {
     Name = "Ubuntu22Server"
   }
-  user_data = file("/home/rlogical-lap-23/Terraform/modules/ec2/cloudwatch.sh")
+  user_data = file("${path.module}/cloudwatch.sh")
 
 
 }
