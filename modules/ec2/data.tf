@@ -13,3 +13,12 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"]
 }
+data "aws_vpc" "default" {
+  default = true
+}
+data "aws_iam_role" "ssm_role" {
+  name = "SSM"  # Replace with your actual role name
+}
+data "aws_iam_instance_profile" "ssm_instance_profile" {
+  name = "SSM"  # Replace with your actual instance profile name
+}
