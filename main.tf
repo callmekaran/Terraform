@@ -2,14 +2,17 @@ provider "aws" {
   profile = "personal"
 }
 
-resource "aws_secretsmanager_secret" "karan_secret" {
-  name = "karan_secret"
-  description = "For Testing Purpose"
+module "secret_manager" {
+    source = "./modules/secret-manager"
 }
 
-resource "aws_secretsmanager_secret_version" "name" {
-  secret_id     = aws_secretsmanager_secret.karan_secret.id
-  secret_string = jsonencode(var.secret_values)
-  depends_on = [ aws_secretsmanager_secret.karan_secret ]
+terraform {
+  backend "s3" {
+    profile = "personal"
+    bucket  = "karan7990539526"
+    key     = "dev/terraform.tfstate"
+    region  = "us-east-1"
+  }
+
 }
 
