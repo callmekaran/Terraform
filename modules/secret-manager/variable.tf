@@ -7,3 +7,4 @@ variable "secret_values" {
   }
   type = map(string)
 }
+variable "reference_secret_manager" {}
