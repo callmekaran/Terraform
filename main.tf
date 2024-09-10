@@ -1,9 +1,14 @@
-provider "aws" {
-  profile = "personal"
+module "secret_manager" {
+  source = "./modules/secret-manager"
+  reference_secret_manager = module.secret_manager.secret_arn
 }
 
-module "secret_manager" {
-    source = "./modules/secret-manager"
+
+module "iam" {
+  source = "./modules/iam"
+  depends_on = [ module.secret_manager ]
+  reference_secret_manager = module.secret_manager.secret_arn
+
 }
 
 terraform {
@@ -15,4 +20,6 @@ terraform {
   }
 
 }
-
+provider "aws" {
+  profile = "personal"
+}
