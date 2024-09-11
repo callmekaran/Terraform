@@ -1,1 +1,5 @@
-reference_secret_manager = "module.reference_secret_manager.arn"
+refrence-vpc2-id = "module.vpc2.vpc2-id"
+refrence-vpc1-id = "module.vpc1.vpc1-id"
+refrence-vpc1-rt-id = "module.vpc1.vpc1-route-table-id"
+refrence-vpc2-rt-id = "module.vpc2.vpc2-route-table-id"
+refrence-vpc-peering-connection-id = "module.vpc-peerings.vpc-peering-connection-id"
