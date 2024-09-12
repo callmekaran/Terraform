@@ -1,30 +1,30 @@
 resource "aws_vpc" "vpc2" {
-    cidr_block = "172.158.0.0/16"
-    enable_dns_support = true    # Enables DNS support for the VPC
-    enable_dns_hostnames = true  # Enables DNS hostnames for the VPC
+  cidr_block           = var.vpc2-cidr-block
+  enable_dns_support   = true # Enables DNS support for the VPC
+  enable_dns_hostnames = true # Enables DNS hostnames for the VPC
 
-    tags = {
+  tags = {
     Name = "vpc2"
   }
 
 }
 
-resource "aws_subnet" "vpc2-public-subet" {
-    cidr_block = "172.158.1.0/24"
-    vpc_id = aws_vpc.vpc2.id
-    tags = {
-      Name = "vpc2-public-subnet"
-    }
-  
+resource "aws_subnet" "vpc2-public-subnet" {
+  cidr_block = var.vpc2-public-subnet-cidr-block
+  vpc_id     = aws_vpc.vpc2.id
+  tags = {
+    Name = "vpc2-public-subnet"
+  }
+
 }
 
 resource "aws_subnet" "vpc2-private-subet" {
-    cidr_block = "172.158.2.0/24"
-    vpc_id = aws_vpc.vpc2.id
-    tags = {
-      Name = "vpc2-private-subnet"
-    }
-  
+  cidr_block = var.vpc2-private-subnet-cidr-block
+  vpc_id     = aws_vpc.vpc2.id
+  tags = {
+    Name = "vpc2-private-subnet"
+  }
+
 }
 
 resource "aws_internet_gateway" "vpc2-internet_gateway" {
@@ -49,7 +49,7 @@ resource "aws_route_table" "vpc2-public-route-table" {
 }
 
 resource "aws_route_table_association" "vpc2-public-route-table-association" {
-  subnet_id      = aws_subnet.vpc2-public-subet.id
+  subnet_id      = aws_subnet.vpc2-public-subnet.id
   route_table_id = aws_route_table.vpc2-public-route-table.id
 }
 
