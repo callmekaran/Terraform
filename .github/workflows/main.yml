@@ -19,15 +19,27 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          
+      - name: Check SonarQube Quality Gate
+        id: quality-gate
+        uses: sonarsource/sonarqube-quality-gate-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   deploy:
+    name: Deploy Application
     runs-on: ubuntu-latest
     needs: build
-    if: steps.sonar-quality-gate.outputs.status == 'OK'
+    if: needs.build.outputs.quality-gate-status == 'OK'
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy Application
-      run: |
-        echo "Deploying application..."
-        # Add your deployment commands here
+      - name: Deploy Application
+        run: |
+          echo "Deploying application..."
+          # Add your deployment commands here
+
+    
+
