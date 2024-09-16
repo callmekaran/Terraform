@@ -20,26 +20,20 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           
-      - name: Check SonarQube Quality Gate
+      - name: Check SonarQube Quality Gate Status
         id: quality-gate
-        uses: sonarsource/sonarqube-quality-gate-action@v2
+        run: |
+          echo "Checking SonarQube Quality Gate status..."
+          STATUS=$(curl -s -X GET -H "Authorization: Bearer $SONAR_TOKEN" "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=my-Java-web-app" | jq -r '.projectStatus.status')
+          echo "Quality Gate Status: $STATUS"
+          if [ "$STATUS" != "OK" ]; then
+            echo "Quality Gate failed"
+            exit 1
+          fi
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-  deploy:
-    name: Deploy Application
-    runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.outputs.quality-gate-status == 'OK'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Deploy Application
-        run: |
-          echo "Deploying application..."
-          # Add your deployment commands here
 
     
 
