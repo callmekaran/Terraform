@@ -19,3 +19,15 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: steps.sonar-quality-gate.outputs.status == 'OK'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy Application
+      run: |
+        echo "Deploying application..."
+        # Add your deployment commands here
