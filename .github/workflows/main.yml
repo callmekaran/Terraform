@@ -53,11 +53,14 @@ jobs:
       - name: Apply Terraform Configuration
         run: |
           cd /home/ubuntu/terraform/
+          echo "Running Terraform Initialization"
           terraform init
-          terraform fmt
+          echo "Running Terraform Validate"
           terraform validate
+          echo "Running Terraform Plan"
           terraform plan
-          terraform apply
+          echo "Running Terraform Apply"
+          terraform apply --auto-approve
 
   notify:
     name: Notify on Google Chat
