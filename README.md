@@ -1,3 +1,9 @@
+**Start Detail Monitoring of ec2 
+**
+**aws ec2 monitor-instances --instance-ids i-096ec8ba90922d2b7 --profile personal --region ap-south-1**
+
+
+
 **Terraform Infrastructure for EC2, CloudWatch, SNS, and SSM**
 
 **CPU Utilization: High CPU usage.**                                    
