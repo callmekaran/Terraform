@@ -8,6 +8,8 @@ aws ec2 monitor-instances --instance-ids i-096ec8ba90922d2b7 --profile personal 
 
 **Step 2: Configure SSM Parameter for CloudWatch Alerts**
 
+CHeck IF Already have (aws ec2 describe-instances --instance-ids i-096ec8ba90922d2b7 --query 'Reservations[*].Instances[*].[InstanceId,IamInstanceProfile.Arn]' --output table --profile personal --region ap-south-1)
+
 Utilize Terraform to set up an SSM parameter that will be used for CloudWatch alerts. (See the Terraform code below.)
 
 **Step 3: Install SSM and CloudWatch Agent**
