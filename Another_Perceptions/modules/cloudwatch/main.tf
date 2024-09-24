@@ -57,39 +57,4 @@ resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   }
 }
 
-# Variables
-variable "reference_sns_topic" {
-  description = "SNS topic ARN for alerts"
-  type        = string
-  default = "arn:aws:sns:us-east-2:108227242887:HighPriorityAlerts-Ohio"
-}
-
-variable "instance_ids" {
-  type    = list(string)
-  default = [
-    "i-044f6de280384765b",  # Ubuntu - TJ Backend API
-
-  ]
-}
-
-provider "aws"{
-   profile = "tj"
-   region = "us-east-2"
-}
-
-# CloudWatch Composite Alarm
-# CloudWatch Composite Alarm
-resource "aws_cloudwatch_composite_alarm" "combined_alarm" {
-  for_each = toset(var.instance_ids)
-
-  alarm_name = "CompositeAlarm-${trimspace(data.aws_instance.selected_instances[each.key].tags.Name)}"
-  alarm_description = "This alarm monitors CPU and Memory usage for ${trimspace(data.aws_instance.selected_instances[each.key].tags.Name)}."
-
-  # Use alarm_name attribute and replace hyphens with underscores
-  alarm_rule = "ALARM(${aws_cloudwatch_metric_alarm.cpu_alarm[each.key].alarm_name}) AND ALARM(${aws_cloudwatch_metric_alarm.memory_alarm[each.key].alarm_name})"
-
-  actions_enabled = true
-  alarm_actions   = [var.reference_sns_topic]
-  ok_actions      = [var.reference_sns_topic]
-}
 
