@@ -29,7 +29,9 @@ resource "digitalocean_project_resources" "barfoo" {
   resources = [
     digitalocean_droplet.foobar.urn,
     digitalocean_vpc.example.urn,
-    digitalocean_ssh_key.default.id # Using .urn for the resource URN
+    digitalocean_ssh_key.default.id,
+    digitalocean_firewall.web-firewall,
+    digitalocean_monitor_alert.alerts
   ]
 }
 
