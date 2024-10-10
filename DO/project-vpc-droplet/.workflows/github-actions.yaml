@@ -1,31 +1,76 @@
-name: Terraform
+name: CI/CD Workflow
 
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
+      - main
 
 jobs:
-  terraform:
+  analyze:
+    name: Build & Analyze Code
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
         with:
-          terraform_version: 1.5.0  # Specify the version of Terraform you want to use
+          fetch-depth: 0  # Full clone ensures complete analysis
 
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -out=tfplan
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+      - name: Run SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
         env:
-          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}  # Use GitHub Secrets to store your API token
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Verify SonarQube Quality Gate
+        id: quality-gate
+        run: |
+          echo "Retrieving SonarQube Quality Gate status..."
+          QUALITY_STATUS=$(curl -s -X GET -H "Authorization: Bearer $SONAR_TOKEN" "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=my-Java-web-app" | jq -r '.projectStatus.status')
+          echo "Current Quality Gate Status: $QUALITY_STATUS"
+          if [ "$QUALITY_STATUS" != "OK" ]; then
+            echo "Quality Gate failed. Please address the issues."
+            exit 1
+          fi
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  deploy:
+    name: Deploy to Staging
+    runs-on: staging-terraform
+    needs: analyze
+
+    steps:
+      - name: Synchronize Codebase
+        run: |
+          cd /home/ubuntu/terraform/
+          echo "Synchronizing with the main branch..."
+          git fetch --all
+          git pull origin main
+          echo "Code synchronized."
+
+      - name: Apply Terraform Configuration
+        run: |
+          cd /home/ubuntu/terraform/
+          echo "Running Terraform Initialization"
+          terraform init
+          echo "Running Terraform Validate"
+          terraform validate
+          echo "Running Terraform Plan"
+          terraform plan
+          echo "Running Terraform Apply"
+          terraform apply --auto-approve
+
+  notify:
+    name: Notify on Google Chat
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: ${{ always() }}
+
+    steps:
+      - name: Send Deployment Notification
+        uses: SimonScholz/google-chat-action@main
+        with:
+          webhookUrl: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+          jobStatus: ${{ job.status }}
