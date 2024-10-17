@@ -24,7 +24,3 @@ resource "aws_security_group" "temp_sg" {
     description = "Allow all outbound traffic"
   }
 }
-
-output "security_group_id" {
-  value = aws_security_group.temp_sg.id
-}
