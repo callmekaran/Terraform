@@ -3,12 +3,6 @@ provider "aws" {
   profile = "personal"
 }
 
-# Variable for ingress ports
-variable "ingress_ports" {
-  description = "List of ingress ports to allow"
-  type        = list(number)
-  default     = [80, 443, 8080]
-}
 
 # Security group with dynamic ingress rules and allow all egress rule
 resource "aws_security_group" "temp_sg" {
