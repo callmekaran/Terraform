@@ -3,14 +3,6 @@ provider "aws" {
   profile = "personal"
 }
 
-# Get the default VPC
-data "aws_vpc" "default_vpc" {
-  filter {
-    name   = "isDefault"
-    values = ["true"]
-  }
-}
-
 # Variable for ingress ports
 variable "ingress_ports" {
   description = "List of ingress ports to allow"
