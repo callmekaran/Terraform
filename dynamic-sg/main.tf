@@ -1,9 +1,3 @@
-provider "aws" {
-  region  = "ap-south-1"
-  profile = "personal"
-}
-
-
 # Security group with dynamic ingress rules and allow all egress rule
 resource "aws_security_group" "temp_sg" {
   name   = "temp-sg"
