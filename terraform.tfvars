@@ -1,1 +1,0 @@
-bucketname = "karan.rlogical.com"
