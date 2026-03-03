@@ -19,6 +19,6 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectKey: Terraform       # Replace with your SonarCloud project key
+          projectKey: callmekaran_Terraform       # Replace with your SonarCloud project key
           organization: callmekaran    # Replace with your SonarCloud org name
           token: ${{ secrets.SONAR_TOKEN }}
