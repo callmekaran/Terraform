@@ -17,12 +17,9 @@ jobs:
         uses: actions/checkout@v3
         
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: sonarsource/sonarcloud-github-action@master
         with:
-          # projectKey and organization are typically set in the SonarCloud UI tutorial
-          # or a sonar-project.properties file
-          args: >
-            -Dsonar.projectKey=callmekaran_Terraform
-            -Dsonar.organization=callmekaran
+          organization: callmekaran
+          projectKey: callmekaran_Terraform
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
