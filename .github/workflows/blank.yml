@@ -18,8 +18,5 @@ jobs:
         
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
-        with:
-          organization: callmekaran
-          projectKey: callmekaran_Terraform
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
