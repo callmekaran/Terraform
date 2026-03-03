@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v2.4.0 # Use the official action
+        uses: SonarSource/sonarqube-scan-action@master
         with:
           # projectKey and organization are typically set in the SonarCloud UI tutorial
           # or a sonar-project.properties file
